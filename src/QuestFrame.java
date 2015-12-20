@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import javafx.animation.*;
 
 /**
  * Created by vadim on 20.12.15.
@@ -13,9 +14,12 @@ public class QuestFrame extends JFrame {
     private JButton button1;
     private JScrollBar scrollBar1;
     private JScrollBar scrollBar2;
-
-    public QuestFrame() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+    private ImagePanel imagePanel;
+    public QuestFrame()  {
+        imagePanel = new ImagePanel("F:\\Laby(Java)\\TextQuest\\retro_fon.png");
         setContentPane(panel1);
+        //panel1.add(imagePanel);
+        FrameArea.setOpaque(false);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         pack();
         setVisible(true);
@@ -27,9 +31,4 @@ public class QuestFrame extends JFrame {
         QuestFrame questFrame = new QuestFrame();
     }
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-        ArrayList<Frame> frame = new ArrayList<Frame>();
-
-    }
 }
