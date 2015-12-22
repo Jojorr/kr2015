@@ -15,7 +15,7 @@ public class Item {
 
     public static Item combine(Item item1, Item item2){
         //TODO decide which is better: separate item classes, or item array and combine by name
-        if((item1.getName().equals("Ножницы") && item2.getName().equals("Конверт")) ||
+        if((item1.getName().equals("Ножницы") && item2.getName().equals("Конверт")) &&
                 (item2.getName().equals("Ножницы") && item1.getName().equals("Конверт")))return new Item("Ключ");
         //if (())
         else return null;

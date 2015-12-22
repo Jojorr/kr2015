@@ -18,7 +18,6 @@ class ImagePanel extends JPanel {
         setMinimumSize(size);
         setMaximumSize(size);
         setSize(size);
-        setLayout(null);
     }
 
     public void paintComponent(Graphics g) {
