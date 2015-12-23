@@ -17,30 +17,41 @@ public class MainFrame extends JFrame {
     JButton choice1 = new JButton();
     JButton choice2 = new JButton();
     JButton choice3 = new JButton();
-    public MainFrame() {
-        questPanel.setLayout(new GridLayout(0,2));
-        //this.add(imagePanel);//TODO Fix background picture
 
-        questPanel.setOpaque(false);
+    public MainFrame() {
+
+        questPanel.setLayout(new BoxLayout(questPanel,BoxLayout.Y_AXIS));
+
+        //this.add(imagePanel);
+        Color color = new Color(0xF8FFFD, true);
+        //FrameArea.setBackground(color);
+        //questPanel.setBackground(color);
+        //itemPanel.setBackground(color);
         FrameArea.setLineWrap(true);
-        FrameArea.setOpaque(true);
+        //FrameArea.setForeground(Color.WHITE);
         FrameArea.setWrapStyleWord(true);
         FrameArea.setEditable(false);
         FrameArea.setMinimumSize( new Dimension(450,450));
-        questPanel.add(FrameArea);
-        itemPanel.setLayout(new BorderLayout());
+
+        itemPanel.setLayout(new BoxLayout(itemPanel,BoxLayout.X_AXIS));
         JScrollPane TextScroll = new JScrollPane(FrameArea);
         TextScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-
+        questPanel.add(FrameArea);
         questPanel.add(itemPanel);
         JScrollPane InventoryScroll = new JScrollPane(itemPanel);
         InventoryScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         questPanel.add(TextScroll);
         questPanel.add(InventoryScroll);
         add(questPanel);
-
-        itemPanel.setLayout(new GridLayout(3,0));
+        this.setMinimumSize(new Dimension(900,900));
+        choice1.setMaximumSize(new Dimension(100,25));
+        choice1.setPreferredSize(new Dimension(100,25));
+        choice2.setMaximumSize(new Dimension(100,25));
+        choice2.setPreferredSize(new Dimension(100,25));
+        choice3.setMaximumSize(new Dimension(100,25));
+        choice3.setPreferredSize(new Dimension(100,25));
+        itemPanel.setLayout(new GridLayout(3,1));
         itemPanel.add(choice1);
         itemPanel.add(choice2);
         itemPanel.add(choice3);
@@ -50,10 +61,7 @@ public class MainFrame extends JFrame {
         choice1.addActionListener(start);
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setVisible(true);
-        this.setMinimumSize(new Dimension(900,900));
-        choice1.setMaximumSize(new Dimension(100,25));
-        choice1.setPreferredSize(new Dimension(200,50));
+
     }
 
 
@@ -77,12 +85,19 @@ public class MainFrame extends JFrame {
                     " Ходят слухи, на всех рынках и алхимических цехах можно купить таблички с подсказками, однако я был совсем безоружен." +
                     " Но денег мне хватит только на что-то одно…\n");
             choice1.removeActionListener(start);
+            choice2.removeActionListener(exit);
             choice1.addActionListener(s1a1);
             choice2.addActionListener(s1a2);
             choice3.addActionListener(s1a3);
+            choices.clear();
         }
     };
-
+    ActionListener exit = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.exit(0);
+        }
+    };
     ActionListener s1a1 = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -351,9 +366,28 @@ public class MainFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if( choices.get(2) == 1){
-                FrameArea.setText("Дорога шла и мы решил идти пока хватит сил, дорога пылила, но мы хотя бы не собьемся с курса.");
+                FrameArea.setText("Дорога шла и мы решили идти пока хватит сил, дорога пылила, но мы хотя бы не собьемся с курса.");
+                FrameArea.append("Внезапно выхватив нож, напарник кидаеться на вас ");
+                if(choices.get(2) == 1){
+                    FrameArea.append("Вы слабы от похмелья и устали он пронзает вас ножом. Последнее что вы слышите:\n" +
+                            "    -Жаль что не удалось привести тебя к алтарю.\n" +
+                            "Мне жаль вас солнцеликий, видимо сплетения судьбы вывели вас на ложный путь.\n" +
+                            "Вы мертвы.");
+                    choice1.removeActionListener(s6_1_a1);
+                    choice2.removeActionListener(s6_1_a2);
+                    choice1.addActionListener(start);
+                    choice1.setText("Начать заново");
+                    choice2.setText("Выйти");
+                    choice2.addActionListener(exit);
+                }else if(choices.get(2) == 2){
+                    FrameArea.append("Если вы трезвы, вы успеваете перехватить руку и всадить нож в него. " +
+                            "Последнее что вы слышите:\n" +
+                            "   -Жаль .. кх кх – что не получилось, к алта…\n" +
+                            "   \n" +
+                            "Я отправился дальше в путь");
+                }
             }else if(choices.get(3) == 2 && choices.get(2) == 2){
-                FrameArea.setText("Дорога шла и я решил идти пока хватит сил, дорога пылила, но я хотя бы не собьемся с курса");
+                FrameArea.setText("Дорога шла и я решил идти пока хватит сил, дорога пылила, но я хотя бы не собьюсь с курса");
             }
             choices.add(1);
             choice1.removeActionListener(s5a1);
@@ -363,26 +397,66 @@ public class MainFrame extends JFrame {
     ActionListener s5a2 = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            FrameArea.setText("Дорога пустыней была невыносима.");
+            FrameArea.setText("Дорога пустыней была невыносима. ");
+            if(choices.get(2) == 1 || choices.get(3) == 2){
+                FrameArea.append("Ваш напарник просит вас вернуться на тракт");
+                choice1.removeActionListener(s5a1);
+                choice2.removeActionListener(s5a2);
+                choice1.addActionListener(s6_1_a1);
+                choice2.addActionListener(s6_1_a2);
+                choice1.setText("Пойти по тракту.");
+                choice2.setText("Пойти в обход");
+            }else if(choices.get(0) == 1 || choices.get(0) == 3){
+                FrameArea.append("Особенно для тех, кто посмел по собственной глупости сунуться в неё неподготовленным." +
+                        " Не взяв с собой достаточно припасов вы обрекли себя на медленную смерть. " +
+                        "Пустыня не щадит дураков, вы погибли." +
+                        " Мне жаль вас солнцеликий, видимо сплетения судьбы вывели вас на ложный путь.\n" +
+                        "Вы мертвы.");
+                choice1.removeActionListener(s5a1);
+                choice2.removeActionListener(s5a2);
+                choice1.addActionListener(start);
+                choice1.setText("Начать заново");
+                choice2.setText("Выйти");
+                choice2.addActionListener(exit);
+            }
             choices.add(2);
             choice1.removeActionListener(s5a1);
             choice2.removeActionListener(s5a2);
         }
     };
-    ActionListener s6a1 = new ActionListener() {
+    ActionListener s6_1_a1 = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            FrameArea.setText("Мы отправились дальше в путь");
         }
     };
-    ActionListener s6a2 = new ActionListener() {
+    ActionListener s6_1_a2 = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            FrameArea.setText("Выхватив нож, напарник кидаеться на вас ");
+            if(choices.get(2) == 1){
+                FrameArea.append("Вы слабы от похмелья и устали он пронзает вас ножом. Последнее что вы слышите:\n" +
+                        "    -Жаль что не удалось привести тебя к алтарю.\n" +
+                        "Мне жаль вас солнцеликий, видимо сплетения судьбы вывели вас на ложный путь.\n" +
+                        "Вы мертвы.");
+                choice1.removeActionListener(s6_1_a1);
+                choice2.removeActionListener(s6_1_a2);
+                choice1.addActionListener(start);
+                choice1.setText("Начать заново");
+                choice2.setText("Выйти");
+                choice2.addActionListener(exit);
+            }else if(choices.get(2) == 2){
+                FrameArea.append("Если вы трезвы, вы успеваете перехватить руку и всадить нож в него. " +
+                        "Последнее что вы слышите:\n" +
+                        "   -Жаль .. кх кх – что не получилось, к алта…\n" +
+                        "   \n" +
+                        "Я отправился дальше в путь");
+                choice1.removeActionListener(s6_1_a1);
+                choice2.removeActionListener(s6_1_a2);
+            }
         }
     };
     public static void main(String[] args) {
-
         MainFrame mainFrame = new MainFrame();
     }
 }
